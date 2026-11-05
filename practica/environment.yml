@@ -1,0 +1,11 @@
+name: practica-smk
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - snakemake>=9
+  - r-base>=4.3
+  - r-uwot
+  - r-dplyr
+  - r-ggplot2
+  - r-ggrepel

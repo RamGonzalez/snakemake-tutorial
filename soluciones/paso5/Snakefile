@@ -1,0 +1,41 @@
+# Paso 5: params y log. Sin números "escondidos" dentro de los comandos
+
+NN = [5, 9, 15]                                       # NUEVO: los valores de n_neighbors, en un solo lugar
+
+rule all:
+    input:
+        "results/type_counts.txt",
+        "results/umap.png"
+
+rule count_types:
+    input:
+        "data/poke_starter.tsv"
+    output:
+        "results/type_counts.txt"
+    shell:
+        "cut -f2 {input} | tail -n +2 | sort | uniq -c > {output}"
+
+rule run_umap:
+    input:
+        "data/poke_starter.tsv"
+    output:
+        "results/umap_nn{nn}.tsv"
+    params:                                           # NUEVO
+        seed = 7,
+        min_dist = 0.1
+    log:                                              # NUEVO
+        "logs/run_umap_nn{nn}.log"
+    shell:
+        "Rscript scripts/run_umap.R {input} {output} {wildcards.nn} {params.seed} {params.min_dist} > {log} 2>&1"
+
+rule plot_umap:
+    input:
+        expand("results/umap_nn{nn}.tsv", nn=NN)      # CAMBIO: usa la lista NN
+    output:
+        "results/umap.png"
+    params:                                           # NUEVO
+        highlight = "Pikachu,Eevee"
+    log:                                              # NUEVO
+        "logs/plot_umap.log"
+    shell:
+        "Rscript scripts/plot_umap.R {output} {params.highlight} {input} > {log} 2>&1"

@@ -1,0 +1,30 @@
+# Paso 4: wildcards. Una sola regla para varios valores de n_neighbors
+
+rule all:
+    input:
+        "results/type_counts.txt",
+        "results/umap.png"
+
+rule count_types:
+    input:
+        "data/poke_starter.tsv"
+    output:
+        "results/type_counts.txt"
+    shell:
+        "cut -f2 {input} | tail -n +2 | sort | uniq -c > {output}"
+
+rule run_umap:
+    input:
+        "data/poke_starter.tsv"
+    output:
+        "results/umap_nn{nn}.tsv"                     # CAMBIO: {nn} es un wildcard
+    shell:
+        "Rscript scripts/run_umap.R {input} {output} {wildcards.nn} 7 0.1"   # CAMBIO: el 9 ahora es {wildcards.nn}
+
+rule plot_umap:
+    input:
+        expand("results/umap_nn{nn}.tsv", nn=[5, 9, 15])   # CAMBIO: tres archivos de entrada
+    output:
+        "results/umap.png"
+    shell:
+        "Rscript scripts/plot_umap.R {output} Pikachu,Eevee {input}"

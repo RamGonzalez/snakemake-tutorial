@@ -1,0 +1,22 @@
+# Paso 2: una regla que llama a un script de R
+
+rule all:                                             # NUEVO: lo que queremos obtener al final
+    input:
+        "results/type_counts.txt",
+        "results/umap_nn9.tsv"
+
+rule count_types:
+    input:
+        "data/poke_starter.tsv"
+    output:
+        "results/type_counts.txt"
+    shell:
+        "cut -f2 {input} | tail -n +2 | sort | uniq -c > {output}"
+
+rule run_umap:                                        # NUEVO
+    input:
+        "data/poke_starter.tsv"
+    output:
+        "results/umap_nn9.tsv"
+    shell:
+        "Rscript scripts/run_umap.R {input} {output} 9 7 0.1"

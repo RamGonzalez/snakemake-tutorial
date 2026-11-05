@@ -1,0 +1,9 @@
+# Paso 1: nuestra primera regla (bash)
+
+rule count_types:
+    input:
+        "data/poke_starter.tsv"
+    output:
+        "results/type_counts.txt"
+    shell:
+        "cut -f2 {input} | tail -n +2 | sort | uniq -c > {output}"

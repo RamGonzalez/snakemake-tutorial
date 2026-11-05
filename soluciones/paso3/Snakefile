@@ -1,0 +1,30 @@
+# Paso 3: encadenamos reglas (la salida de una es la entrada de otra)
+
+rule all:
+    input:
+        "results/type_counts.txt",
+        "results/umap.png"                            # CAMBIO: ahora pedimos la figura
+
+rule count_types:
+    input:
+        "data/poke_starter.tsv"
+    output:
+        "results/type_counts.txt"
+    shell:
+        "cut -f2 {input} | tail -n +2 | sort | uniq -c > {output}"
+
+rule run_umap:
+    input:
+        "data/poke_starter.tsv"
+    output:
+        "results/umap_nn9.tsv"
+    shell:
+        "Rscript scripts/run_umap.R {input} {output} 9 7 0.1"
+
+rule plot_umap:                                       # NUEVO
+    input:
+        "results/umap_nn9.tsv"
+    output:
+        "results/umap.png"
+    shell:
+        "Rscript scripts/plot_umap.R {output} Pikachu,Eevee {input}"

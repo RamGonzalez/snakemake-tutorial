@@ -3,3 +3,5 @@
 __pycache__/
 .Rhistory
 .Rproj.user/
+results/
+logs/
