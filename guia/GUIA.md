@@ -6,12 +6,12 @@ Ya conoces el script `umap-pokemon.R` de la sesión de R: un solo archivo que lo
 
 ## Cómo usar esta guía
 
-- En cada paso **copias y pegas** un `Snakefile` completo (reemplazas todo lo que tenías). Las líneas nuevas o cambiadas están marcadas con `# NUEVO` o `# CAMBIO`.
+- En cada paso **copias y pegas** un `snakefile` completo (reemplazas todo lo que tenías). Las líneas nuevas o cambiadas están marcadas con `# NUEVO` o `# CAMBIO`.
 - Antes de correr algo, **piensa qué crees que va a pasar**. Después de correrlo, **lee lo que Snakemake imprimió**. Ese es el aprendizaje.
 - No hace falta escribir código. Si algo no sale, sigue adelante: **no nos vamos a detener por errores** (la sesión queda grabada). Mira la sección [Si te sale un error](#si-te-sale-un-error) o usa el truco para alcanzar al grupo:
 
   ```bash
-  cp ../soluciones/paso3/Snakefile .     # cambia el 3 por el último paso que te funcionó
+  cp ../soluciones/paso3/snakefile .     # cambia el 3 por el último paso que te funcionó
   ```
 
 - Al terminar cada paso, escribe `listo` en el chat.
@@ -65,10 +65,10 @@ practica/
 │   ├── run_umap.R            # calcula un UMAP
 │   └── plot_umap.R           # grafica uno o varios UMAP
 ├── environment.yml
-└── (Snakefile)               # lo vas a crear tú en el paso 1
+└── (snakefile)               # lo vas a crear tú en el paso 1
 ```
 
-Los dos scripts de R ya están listos: son el script de la sesión de R, dividido en dos. Tú solo vas a escribir el `Snakefile`, que le dice a Snakemake **qué se necesita para producir qué**.
+Los dos scripts de R ya están listos: son el script de la sesión de R, dividido en dos. Tú solo vas a escribir el `snakefile`, que le dice a Snakemake **qué se necesita para producir qué**.
 
 Esto es lo que vamos a construir. Cada recuadro es una *regla*; las flechas son archivos:
 
@@ -82,8 +82,8 @@ poke_starter.tsv ───┼─► run_umap  nn=9  ─┼─► plot_umap ─�
 Crea el archivo vacío, **con este nombre exacto** (sin extensión, con `S` mayúscula):
 
 ```bash
-touch Snakefile
-code Snakefile      # abre el archivo en VS Code (o ábrelo como prefieras)
+touch snakefile
+code snakefile      # abre el archivo en VS Code (o ábrelo como prefieras)
 ```
 
 ---
@@ -92,7 +92,7 @@ code Snakefile      # abre el archivo en VS Code (o ábrelo como prefieras)
 
 Una **regla** dice: "para producir este `output`, necesito este `input`, y lo hago con este comando".
 
-Pega esto en tu `Snakefile`:
+Pega esto en tu `snakefile`:
 
 ```python
 # Paso 1: nuestra primera regla (bash)
@@ -172,7 +172,7 @@ Otra cosa: no creaste la carpeta `results/`; Snakemake la creó sola.
 
 ## Paso 2: una regla que llama a un script de R
 
-Reemplaza todo el `Snakefile` con esto:
+Reemplaza todo el `snakefile` con esto:
 
 ```python
 # Paso 2: una regla que llama a un script de R
@@ -255,7 +255,7 @@ Porque `results/type_counts.txt` ya existe y está al día (lo creamos en el pas
 
 ## Paso 3: encadenar reglas
 
-Reemplaza todo el `Snakefile`:
+Reemplaza todo el `snakefile`:
 
 ```python
 # Paso 3: encadenamos reglas (la salida de una es la entrada de otra)
@@ -310,7 +310,7 @@ Abre la figura (`open results/umap.png` en Mac, `xdg-open results/umap.png` en L
 2. Quedan junto al grupo Grass, aunque Pikachu es Electric y Eevee es Normal. Es la misma pregunta del final del script original: *"¿Pikachu y Eevee son tipo Grass???"*
 </details>
 
-✅ **Checkpoint:** `listo` en el chat. *(Si te perdiste, corre `cp ../soluciones/paso3/Snakefile .` y sigue con nosotros.)*
+✅ **Checkpoint:** `listo` en el chat. *(Si te perdiste, corre `cp ../soluciones/paso3/snakefile .` y sigue con nosotros.)*
 
 ---
 
@@ -318,7 +318,7 @@ Abre la figura (`open results/umap.png` en Mac, `xdg-open results/umap.png` en L
 
 Queremos el UMAP con varios valores de `n_neighbors` (5, 9 y 15). No vamos a copiar la regla tres veces: usamos un **wildcard**.
 
-Reemplaza todo el `Snakefile`:
+Reemplaza todo el `snakefile`:
 
 ```python
 # Paso 4: wildcards. Una sola regla para varios valores de n_neighbors
@@ -391,7 +391,7 @@ Abre `results/umap.png`: ahora tiene un panel por cada `n_neighbors`.
 2. Daría el mismo resultado, pero los tres `run_umap` correrían uno tras otro en lugar de en paralelo.
 </details>
 
-✅ **Checkpoint:** `listo` en el chat. *(Si te perdiste: `cp ../soluciones/paso4/Snakefile .`)*
+✅ **Checkpoint:** `listo` en el chat. *(Si te perdiste: `cp ../soluciones/paso4/snakefile .`)*
 
 ---
 
@@ -399,7 +399,7 @@ Abre `results/umap.png`: ahora tiene un panel por cada `n_neighbors`.
 
 Los números `7` y `0.1` siguen escondidos dentro del comando. Los sacamos a `params`, ponemos los valores de `n_neighbors` en una lista al inicio del archivo, y guardamos la salida de cada job en un `log`.
 
-Reemplaza todo el `Snakefile`:
+Reemplaza todo el `snakefile`:
 
 ```python
 # Paso 5: params y log. Sin números "escondidos" dentro de los comandos
@@ -447,7 +447,7 @@ rule plot_umap:
 
 - `params:` guarda valores con nombre que puedes usar en `shell` como `{params.seed}`.
 - `log:` declara dónde irá el registro de cada job. Es `> {log} 2>&1` el que realmente lo escribe: redirige lo que imprime el script.
-- `NN = [5, 9, 15]` es Python normal: una variable al inicio del archivo. Un `Snakefile` es Python con superpoderes.
+- `NN = [5, 9, 15]` es Python normal: una variable al inicio del archivo. Un `snakefile` es Python con superpoderes.
 
 **Antes de correr:** nada de lo que calculamos cambia (misma semilla, mismos valores). ¿Crees que Snakemake va a volver a correr algo?
 
@@ -478,7 +478,7 @@ cat logs/run_umap_nn9.log
 2. No cambió: usamos la misma semilla (`7`) y los mismos parámetros, y el resultado es idéntico. Eso es reproducibilidad.
 </details>
 
-✅ **Checkpoint:** `listo` en el chat. *(Si te perdiste: `cp ../soluciones/paso5/Snakefile .`)*
+✅ **Checkpoint:** `listo` en el chat. *(Si te perdiste: `cp ../soluciones/paso5/snakefile .`)*
 
 ---
 
@@ -486,7 +486,7 @@ cat logs/run_umap_nn9.log
 
 Este paso no cambia el código: lo usamos para entender **cuándo** Snakemake vuelve a correr algo. Para cada experimento: predice, corre `snakemake -n`, compara.
 
-**6a. Cambiar un parámetro.** En tu `Snakefile`, cambia `min_dist = 0.1` por `min_dist = 0.5` y guarda.
+**6a. Cambiar un parámetro.** En tu `snakefile`, cambia `min_dist = 0.1` por `min_dist = 0.5` y guarda.
 
 ```bash
 snakemake -n
@@ -577,11 +577,11 @@ snakemake -j 4 --forcerun run_umap
 
 ## Si te sale un error
 
-Durante la sesión no nos detenemos por errores individuales. Busca el texto de tu error aquí. Si no está, no te preocupes: sigue con el último `Snakefile` que funcionó (`cp ../soluciones/pasoN/Snakefile .`) y avísanos después con un Issue (ver abajo).
+Durante la sesión no nos detenemos por errores individuales. Busca el texto de tu error aquí. Si no está, no te preocupes: sigue con el último `snakefile` que funcionó (`cp ../soluciones/pasoN/snakefile .`) y avísanos después con un Issue (ver abajo).
 
 | Mensaje | Qué pasó | Cómo arreglarlo |
 |---|---|---|
-| `Error: No Snakefile found, tried Snakefile, snakefile, ...` | Estás en la carpeta equivocada, o el archivo no se llama exactamente `Snakefile`. | `pwd` debe terminar en `practica`. Revisa con `ls` el nombre del archivo. |
+| `Error: No Snakefile found, tried Snakefile, snakefile, ...` | Estás en la carpeta equivocada, o el archivo no se llama `snakefile`. | `pwd` debe terminar en `practica`. Revisa con `ls` el nombre del archivo. |
 | `Error: cores have to be specified for local execution` | Corriste `snakemake` sin decir cuántos cores. | Agrega `-j 1` (o `-j 4`). El dry-run (`-n`) no lo necesita. |
 | `TabError ... inconsistent use of tabs and spaces in indentation` | Mezclaste tabuladores y espacios. | Usa solo espacios. En VS Code, abajo a la derecha: *Spaces: 4*. |
 | `MissingInputException ... affected files: data/poke_starters.tsv` | Un nombre de archivo mal escrito, o no estás en `practica/`. | Compara la ruta con `ls data`. |
@@ -596,13 +596,6 @@ Durante la sesión no nos detenemos por errores individuales. Busca el texto de 
 | `LockException: Directory cannot be locked` | Hay otra corrida activa, o una anterior se interrumpió. | Si no hay otra corrida: `snakemake --unlock`. |
 
 ---
-
-## Tarea (opcional)
-
-1. **`config.yaml`:** saca `NN`, `seed`, `min_dist` y los nombres a resaltar a un archivo `config.yaml` y léelo con `configfile: "config.yaml"`. Mira la sección [Configuration](https://snakemake.readthedocs.io/en/stable/snakefiles/configuration.html) de la documentación.
-2. **Agrega una regla** que haga otra figura con los datos (por ejemplo, el `ggpairs` del script original).
-3. **Entornos por regla:** mira cómo se declara `conda:` en una regla ([Distribution and Reproducibility](https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html)).
-4. **Varios archivos:** divide tu `Snakefile` en varios archivos con `include:` ([Modularization](https://snakemake.readthedocs.io/en/stable/snakefiles/modularization.html)).
 
 ## ¿Dudas o errores después de la sesión?
 

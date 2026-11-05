@@ -27,9 +27,9 @@ Sesión 9 de *Viernes de Bioinformática 2026*: introducción a Snakemake. Parti
 | Carpeta | Qué hay |
 |---|---|
 | [guia/](guia/GUIA.md) | La guía paso a paso de la práctica (en español) |
-| [practica/](practica/) | Tu carpeta de trabajo: datos, scripts de R y `environment.yml`. Aquí escribes tu `Snakefile` |
-| [soluciones/](soluciones/) | El `Snakefile` de cada paso, por si te pierdes: `cp ../soluciones/paso3/Snakefile .` |
-| [slides/](slides/) | Las diapositivas de la sesión |
+| [practica/](practica/) | Tu carpeta de trabajo: datos, scripts de R y `environment.yml`. Aquí escribes tu `snakefile` |
+| [soluciones/](soluciones/) | El `snakefile` de cada paso, por si te pierdes: `cp ../soluciones/paso3/snakefile .` |
+| [slides/](slides/) | Las diapositivas de la sesión (`snakemake_sesion9.pptx`) |
 
 ## ¿Dudas o errores?
 
