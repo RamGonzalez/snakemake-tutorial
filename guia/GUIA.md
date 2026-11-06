@@ -70,6 +70,26 @@ practica/
 
 Los dos scripts de R ya están listos: son el script de la sesión de R, dividido en dos. Tú solo vas a escribir el `snakefile`, que le dice a Snakemake **qué se necesita para producir qué**.
 
+### Los scripts de R reciben sus datos por la línea de comandos
+
+Modificamos los scripts de la sesión de R para que, en vez de tener nombres de archivo y números escritos dentro, los reciban como **argumentos**. Así Snakemake puede llamarlos con distintos archivos y valores. Por ejemplo, `plot_umap.R` empieza así:
+
+```r
+args <- commandArgs(trailingOnly = TRUE)
+if (length(args) < 3) {
+  stop("Uso: Rscript plot_umap.R <salida.png> <nombres_a_resaltar> <umap1.tsv> [umap2.tsv ...]")
+}
+salida    <- args[1]
+resaltar  <- strsplit(args[2], ",")[[1]]
+archivos  <- args[-(1:2)]
+```
+
+- `commandArgs(trailingOnly = TRUE)` devuelve lo que escribes después del nombre del script, como un vector de texto.
+- El primer argumento es el archivo de salida, el segundo son los nombres a resaltar (separados por comas) y todo lo demás son los archivos de entrada.
+- `run_umap.R` funciona igual, con cinco argumentos: `<entrada.tsv> <salida.tsv> <n_neighbors> <semilla> <min_dist>`.
+
+No tienes que editar los scripts. Solo recuerda este patrón: en el `snakefile`, el comando de `shell:` será justo esa línea de `Rscript ...`.
+
 Esto es lo que vamos a construir. Cada recuadro es una *regla*; las flechas son archivos:
 
 ```
