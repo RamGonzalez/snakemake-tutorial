@@ -65,7 +65,7 @@ practica/
 │   ├── run_umap.R            # calcula un UMAP
 │   └── plot_umap.R           # grafica uno o varios UMAP
 ├── environment.yml
-└── (snakefile)               # lo vas a crear tú en el paso 1
+└── snakefile                 # casi vacío: aquí vas a escribir tú, desde el paso 1
 ```
 
 Los dos scripts de R ya están listos: son el script de la sesión de R, dividido en dos. Tú solo vas a escribir el `snakefile`, que le dice a Snakemake **qué se necesita para producir qué**.
@@ -79,10 +79,9 @@ poke_starter.tsv ───┼─► run_umap  nn=9  ─┼─► plot_umap ─�
         └─► count_types ─► results/type_counts.txt
 ```
 
-Crea el archivo vacío, **con este nombre exacto** (sin extensión, con `S` mayúscula):
+Ya hay un `snakefile` casi vacío en la carpeta (el nombre es exacto: sin extensión y en minúsculas). Ábrelo:
 
 ```bash
-touch snakefile
 code snakefile      # abre el archivo en VS Code (o ábrelo como prefieras)
 ```
 
