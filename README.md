@@ -34,5 +34,3 @@ Sesión 9 de *Viernes de Bioinformática 2026*: introducción a Snakemake. Parti
 ## ¿Dudas o errores?
 
 Abre un [Issue](https://github.com/RamGonzalez/snakemake-tutorial/issues/new) con el error completo (copiado, no captura), el paso en el que estabas y la salida de `snakemake --version`.
-
-Plan del curso (para quien imparte): [PLAN.md](PLAN.md).
